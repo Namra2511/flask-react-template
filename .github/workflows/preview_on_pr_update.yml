@@ -14,8 +14,8 @@ jobs:
       - name: Check PR Status
         run: |
           echo "✅ PR Condition Check Passed!"
-          echo "PR Number: ${{ github.event.pull_request.number }}"
-          echo "PR State: ${{ github.event.pull_request.state }}"
+          echo "PR Numbers: ${{ github.event.pull_request.number }}"
+          echo "PR States: ${{ github.event.pull_request.state }}"
           echo "PR Draft: ${{ github.event.pull_request.draft }}"
           echo "PR Title: ${{ github.event.pull_request.title }}"
           echo "Branch: ${{ github.event.pull_request.head.ref }}"
