@@ -1,14 +1,13 @@
 name: preview_on_pr_update
-# only run when updating an 'Open' PR  # retry fix
+# Only run when updating an 'Open' PR
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   preview:
-    # only run when updating an 'Open' PR
-    if: github.event.pull_request.state == 'open'
+    if: github.event.pull_request.state == 'open' && !github.event.pull_request.draft
     uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v3.2.4
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
