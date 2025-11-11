@@ -1,0 +1,59 @@
+version: 2
+updates:
+  # ───────────────────────────────────────────────────────────────
+  # 1️⃣ JavaScript / Frontend dependencies (npm)
+  # ───────────────────────────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+       npm:
+        patterns:
+          - "*" # group all npm packages in a single PR
+    labels:
+      - "dependencies"
+      - "npm"
+      - "security"
+    reviewers:
+      - "platform-team"
+
+  # ───────────────────────────────────────────────────────────────
+  # 2️⃣ Python / Backend dependencies (pip)
+  # ───────────────────────────────────────────────────────────────
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      pip-all:
+        patterns:
+          - "*" # group all pip packages in a single PR
+    labels:
+      - "dependencies"
+      - "python"
+      - "security"
+    reviewers:
+      - "platform-team"
+
+  # ───────────────────────────────────────────────────────────────
+  # 3️⃣ GitHub Actions / Reusable Workflows
+  # Keeps pinned SHAs current for security
+  # ───────────────────────────────────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      gha-all:
+        patterns:
+          - "*" # group all GitHub Actions in a single PR
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "security"
+    reviewers:
+      - "platform-team"
