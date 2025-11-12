@@ -2,16 +2,29 @@ name: cd
 
 on:
   pull_request:
-    types: [ opened, synchronize, reopened, ready_for_review ]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
 
 jobs:
   deploy:
-    if: github.event.pull_request.state == 'open' && github.event.pull_request.draft == false
+    if: |
+      github.actor != 'dependabot[bot]' &&
+      github.event.pull_request.state == 'open' &&
+      github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     concurrency:
       group: cd-preview-${{ github.event.pull_request.head.ref }}
       cancel-in-progress: true
+
     steps:
+      - name: Skip if Dependabot PR
+        if: github.actor == 'dependabot[bot]'
+        run: echo "Skipping deploy for Dependabot PR — secrets are not accessible in Dependabot context."
+
       - name: Checkout app
         uses: actions/checkout@v3
         with:
@@ -27,8 +40,8 @@ jobs:
       - name: Extract branch name
         id: extract_branch
         run: |
-          BRANCH_NAME=$(echo ${{ github.event.pull_request.head.ref }} | sed -e 's/^refs\/heads\///g')
-          BRANCH_HASH=$(sha1sum < <(printf '%s' $BRANCH_NAME) | cut -c -15)
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed -e 's/^refs\/heads\///g')
+          BRANCH_HASH=$(sha1sum < <(printf '%s' "$BRANCH_NAME") | cut -c -15)
           echo "branch_hash=$(echo $BRANCH_HASH)" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
@@ -60,5 +73,5 @@ jobs:
           do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
           do_cluster_id: ${{ vars.DO_CLUSTER_ID }}
           doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
-          pull_request_number: ${{  github.event.pull_request.number }}
+          pull_request_number: ${{ github.event.pull_request.number }}
           deploy_annotate_pr: "true"
