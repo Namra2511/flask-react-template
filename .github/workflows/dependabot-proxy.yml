@@ -26,7 +26,7 @@ jobs:
       - name: Authenticate GitHub CLI with manual token
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: gh auth login --with-token <<< "${GH_TOKEN}"
+        run: echo "${GH_TOKEN}" | gh auth login --with-token
 
       - name: Trigger secure workflow runs
         env:
