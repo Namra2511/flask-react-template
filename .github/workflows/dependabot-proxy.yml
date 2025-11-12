@@ -23,19 +23,18 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y gh
 
-      - name: Configure GitHub CLI authentication
+      - name: Authenticate GitHub CLI (non-interactive)
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          export GITHUB_TOKEN="${GH_TOKEN}"
-          gh auth setup-git
+          echo "${GH_TOKEN}" > token.txt
+          gh auth login --hostname github.com --with-token < token.txt
           gh auth status
 
       - name: Trigger secure workflow runs
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          export GITHUB_TOKEN="${GH_TOKEN}"
           echo "Detected Dependabot PR — triggering workflows securely using GH_TOKEN..."
 
           # Trigger CI workflow
