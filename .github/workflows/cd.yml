@@ -26,12 +26,12 @@ jobs:
         run: echo "Skipping deploy for Dependabot PR — secrets are not accessible in Dependabot context."
 
       - name: Checkout app
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           path: app
 
       - name: Checkout github-ci
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           repository: jalantechnologies/github-ci
           path: platform
