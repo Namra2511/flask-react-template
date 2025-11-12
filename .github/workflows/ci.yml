@@ -22,15 +22,15 @@ jobs:
         run: echo "Skipping lint job for Dependabot PR — secrets unavailable."
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22.13.1'
           cache: 'npm'
@@ -59,7 +59,7 @@ jobs:
         run: echo "Skipping SonarQube analysis for Dependabot PR — secrets unavailable."
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -72,7 +72,7 @@ jobs:
           echo "version=$(echo $tag)" >> $GITHUB_OUTPUT
 
       - name: Checkout github-ci
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           repository: jalantechnologies/github-ci
           path: platform
@@ -115,7 +115,7 @@ jobs:
         run: echo "Skipping tests for Dependabot PR — secrets unavailable."
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run integration tests
         run: docker compose -f docker-compose.test.yml up --exit-code-from app
