@@ -34,10 +34,10 @@ jobs:
         run: |
           echo "Detected Dependabot PR — triggering workflows securely using GH_TOKEN..."
 
-          # Trigger CI workflow (replace if you use a different filename)
+          # Trigger CI workflow
           gh workflow run ci.yml -r ${{ github.event.pull_request.head.ref }}
 
-          # Trigger CD workflow (replace if needed)
+          # Trigger CD workflow
           gh workflow run cd.yml -r ${{ github.event.pull_request.head.ref }}
 
       - name: Confirm Trigger
